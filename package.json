@@ -1,0 +1,39 @@
+{
+  "name": "google-fonts-webpack-plugin",
+  "version": "0.1.0",
+  "description": "Google Fonts Webpack plugin",
+  "main": "src/index.js",
+  "author": "Gabriela Seabra",
+  "license": "ISC",
+  "homepage": "https://github.com/gabiseabra/google-fonts-webpack-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabiseabra/google-fonts-webpack-plugin.git"
+  },
+  "keywords": [
+    "google",
+    "fonts",
+    "webfonts",
+    "webpack",
+    "plugin"
+  ],
+  "scripts": {
+    "test": "mocha spec --colors",
+    "watch": "mocha spec --colors --watch"
+  },
+  "devDependencies": {
+    "memory-fs": "^0.4.1",
+    "mocha": "^3.2.0",
+    "should": "^11.2.1",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "node-fetch": "^1.6.3",
+    "node-unzip-2": "^0.2.1",
+    "webpack-sources": "^0.2.0"
+  },
+  "peerDependencies": {
+    "webpack": "^2.2.0"
+  }
+}
