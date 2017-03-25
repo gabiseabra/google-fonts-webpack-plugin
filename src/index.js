@@ -89,7 +89,7 @@ class GoogleWebfontsPlugin {
 				} else {
 					data.assets.css.push(cssUrl(fonts))
 				}
-				cb()
+				cb(null, data)
 			})
 			compilation.plugin("additional-assets", cb => {
 				compilation.chunks.push(this.chunk)
