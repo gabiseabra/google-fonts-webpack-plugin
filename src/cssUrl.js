@@ -16,7 +16,7 @@ function getVariantName(variant) {
 module.exports = function cssUrl(fonts, apiUrl = API_URL) {
 	const fontQueries = []
 	fonts.forEach(({ family, subsets, variants }) => {
-		let query = "family=" + family.replace(" ", "+")
+		let query = family.replace(" ", "+")
 		if(variants) {
 			query += ":" + variants.map(name => getVariantName(name)).join(",")
 		}
@@ -25,5 +25,5 @@ module.exports = function cssUrl(fonts, apiUrl = API_URL) {
 		}
 		fontQueries.push(query)
 	})
-	return `${apiUrl}?${fontQueries.join("|")}`
+	return `${apiUrl}?family=${fontQueries.join("|")}`
 }
