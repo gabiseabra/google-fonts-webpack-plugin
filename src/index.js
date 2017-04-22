@@ -43,10 +43,15 @@ class GoogleWebfontsPlugin {
 		fonts.forEach((fontOptions) => {
 			const { family } = fontOptions
 			const query = this.api.getFontByFamily(family)
-				.then(font => font.select(_.assign(
-					fontOptions,
-					{ formats: defaultFormats }
-				)))
+				.then(font => {
+					if(!font) {
+						throw new Error(`Font family \"${family}\" not found.`)
+					}
+					return font.select(_.assign(
+						fontOptions,
+						{ formats: defaultFormats }
+					))
+				})
 			promises.push(
 				query.then(q => q.css(path))
 				.then(fontCss => css.push(fontCss))
@@ -62,7 +67,7 @@ class GoogleWebfontsPlugin {
 				)
 			}
 		})
-		return Promise.all(promises).then(() => ({ css, files }))
+		return Promise.all(promises).then(() => ({ css, files })).catch(console.error)
 	}
 
 	apply(compiler) {
