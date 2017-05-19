@@ -1,6 +1,6 @@
 const _ = require("lodash")
 const path = require("path")
-const unzip = require("node-unzip-2")
+const yauzl = require("yauzl")
 const fetch = require("node-fetch")
 const { RawSource } = require("webpack-sources")
 const FontTypes = require("./FontTypes")
@@ -107,22 +107,34 @@ class Selection {
 			return Promise.resolve(this._files)
 		}
 		return this.download()
-			.then(response => new Promise((resolve, reject) => {
+			.then(response => response.buffer())
+			.then(buffer => new Promise((resolve, reject) => {
 				this._files = {}
-				response.body.pipe(unzip.Parse())
-					.on("error", err => reject(err))
-					.on("entry", entry => {
-							const ext = path.extname(entry.path).slice(1)
-							if(entry.type === "File") {
-								const variant = entry.path.match(/\-([a-z0-9]+)\..*$/)[1]
-								const fileName = `${this.font.getName(variant)}.${ext}`
+				yauzl.fromBuffer(buffer, { lazyEntries: true }, (err, zipFile) => {
+					if(err) {
+						reject(err)
+					}
+					const next = () => zipFile.readEntry()
+					zipFile
+						.on("error", reject)
+						.on("end", () => resolve(this._files))
+						.on("entry", entry => {
+							if(/\/$/.test(entry.fileName)) next()
+							const ext = path.extname(entry.fileName).slice(1)
+							const variant = entry.fileName.match(/\-([a-z0-9]+)\..*$/)[1]
+							const fileName = `${this.font.getName(variant)}.${ext}`
+							zipFile.openReadStream(entry, (err, stream) => {
+								if(err) reject(err)
 								const buffer = []
-								entry.on("data", (data) => buffer.push(data))
-								entry.on("end", () => { this._files[fileName] = Buffer.concat(buffer) })
-							}
-					})
-					.on("error", err => reject(err))
-					.on("close", () => resolve(this._files))
+								stream.on("data", data => buffer.push(data))
+								stream.on("end", () => {
+									this._files[fileName] = Buffer.concat(buffer)
+									next()
+								})
+							})
+						})
+					zipFile.readEntry()
+				})
 			}))
 	}
 

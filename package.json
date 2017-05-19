@@ -30,8 +30,8 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "node-fetch": "^1.6.3",
-    "node-unzip-2": "^0.2.1",
-    "webpack-sources": "^0.2.0"
+    "webpack-sources": "^0.2.0",
+    "yauzl": "^2.8.0"
   },
   "peerDependencies": {
     "webpack": "^2.2.0"
