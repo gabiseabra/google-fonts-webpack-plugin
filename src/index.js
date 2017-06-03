@@ -90,7 +90,7 @@ class GoogleWebfontsPlugin {
 			}
 			compilation.plugin("html-webpack-plugin-before-html-generation", (data, cb) => {
 				if(local) {
-					data.assets.css.push(cssFile)
+					data.assets.css.push(path.join(data.assets.publicPath, cssFile))
 				} else {
 					data.assets.css.push(cssUrl(fonts))
 				}
