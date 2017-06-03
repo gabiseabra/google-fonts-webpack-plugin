@@ -32,9 +32,10 @@ class GoogleWebfontsPlugin {
 
 	fetch() {
 		const {
-			path,
 			fonts,
 			apiUrl,
+			path: fontsPath,
+			filename: cssFile,
 			formats: defaultFormats
 		} = this.options
 		const css = []
@@ -52,16 +53,20 @@ class GoogleWebfontsPlugin {
 						{ formats: defaultFormats }
 					))
 				})
+			const cssRelativePath = path.relative(
+				path.dirname(cssFile),
+				fontsPath
+			)
 			promises.push(
-				query.then(q => q.css(path))
+				query.then(q => q.css(cssRelativePath))
 				.then(fontCss => css.push(fontCss))
 			)
-			if(path) {
+			if(fontsPath) {
 				promises.push(
 					query.then(q => q.assets())
 					.then(assets => {
 						for(const fileName in assets) {
-							files[path + fileName] = assets[fileName]
+							files[fontsPath + fileName] = assets[fileName]
 						}
 					})
 				)

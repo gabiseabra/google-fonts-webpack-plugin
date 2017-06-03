@@ -19,14 +19,14 @@ const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, src, fallback }) => `
 }
 `
 
-function getVariantCss({ variant, info, font, formats, path }) {
+function getVariantCss({ variant, info, font, formats, fontsPath }) {
 	const src = info.local.map(fileName => `local("${fileName}")`)
 	let fallback
 	formats.forEach(ext => {
 		if(ext in info) {
 			const url = (
-				typeof path !== "undefined" ?
-				`./${path}${font.getName(variant)}.${ext}` :
+				typeof fontsPath !== "undefined" ?
+				`./${fontsPath}/${font.getName(variant)}.${ext}` :
 				info[ext]
 			)
 			const format = FontTypes[ext]
@@ -59,7 +59,7 @@ class Selection {
 		})
 	}
 
-	css(path) {
+	css(fontsPath) {
 		const { font, query: { subsets, variants, formats } } = this
 		return font.info(subsets)
 			.then(info => {
@@ -72,7 +72,7 @@ class Selection {
 							formats,
 							variant,
 							font,
-							path
+							fontsPath
 						}))
 					}
 				})

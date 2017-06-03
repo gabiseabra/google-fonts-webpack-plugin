@@ -20,6 +20,7 @@ describe("GoogleWebfontPlugin", () => {
 	before(() => {
 		fs = new MemoryFs()
 		plugin = new GoogleWebfontPlugin({
+			filename: "styles/fonts.css",
 			fonts: [
 				{
 					family: "Source Sans Pro",
@@ -59,6 +60,8 @@ describe("GoogleWebfontPlugin", () => {
 	})
 
 	it("emits a css file", () => {
-		fs.existsSync("/fonts.css").should.be.ok()
+		fs.existsSync("/styles/fonts.css").should.be.ok()
+		fs.readFileSync("/styles/fonts.css", "utf8")
+		.should.containEql("../font/Roboto-Regular.woff")
 	})
 })
