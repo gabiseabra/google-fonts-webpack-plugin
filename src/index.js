@@ -54,7 +54,7 @@ class GoogleWebfontsPlugin {
 						{ formats: defaultFormats }
 					))
 				})
-			const cssRelativePath = path.relative(
+			const cssRelativePath = path.posix.relative(
 				path.dirname(cssFile),
 				fontsPath
 			)
@@ -107,7 +107,7 @@ class GoogleWebfontsPlugin {
 			}
 			compilation.plugin("html-webpack-plugin-before-html-generation", (data, cb) => {
 				if(local) {
-					data.assets.css.push(path.join(data.assets.publicPath, cssFile))
+					data.assets.css.push(path.posix.join(data.assets.publicPath, cssFile))
 				} else {
 					data.assets.css.push(cssUrl(fonts))
 				}

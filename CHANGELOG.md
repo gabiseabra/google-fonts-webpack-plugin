@@ -5,6 +5,7 @@
 ### Fixed
 
 * Fixed inconsistent ordering of selectors in generated css file [issue [\#6](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/6)]
+* Fixed assets paths on windows
 
 ### Added
 
