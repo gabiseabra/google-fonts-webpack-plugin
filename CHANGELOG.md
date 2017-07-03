@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+* Fixed inconsistent ordering of selectors in generated css file [issue [\#6](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/6)]
+
 ### Added
 
 * This CHANGELOG.md [issue [\#5](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/5)]

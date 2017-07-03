@@ -38,7 +38,8 @@ class GoogleWebfontsPlugin {
 			filename: cssFile,
 			formats: defaultFormats
 		} = this.options
-		const css = []
+		const compareCss = (a, b) => (a.id.localeCompare(b.id))
+		const fontsCss = []
 		const files = {}
 		const promises = []
 		fonts.forEach((fontOptions) => {
@@ -58,8 +59,14 @@ class GoogleWebfontsPlugin {
 				fontsPath
 			)
 			promises.push(
-				query.then(q => q.css(cssRelativePath))
-				.then(fontCss => css.push(fontCss))
+				query.then(selection => {
+					return selection.css(cssRelativePath).then((css) => {
+						fontsCss.push({
+							css,
+							id: selection.font.id
+						})
+					})
+				})
 			)
 			if(fontsPath) {
 				promises.push(
@@ -72,7 +79,12 @@ class GoogleWebfontsPlugin {
 				)
 			}
 		})
-		return Promise.all(promises).then(() => ({ css, files })).catch(console.error)
+		return Promise.all(promises)
+			.then(() => {
+				fontsCss.sort(compareCss)
+				const css = fontsCss.map(font => font.css).join("\n")
+				return { css, files }
+			})
 	}
 
 	apply(compiler) {
@@ -84,7 +96,7 @@ class GoogleWebfontsPlugin {
 					compilation.assets[fileName] = source
 				}
 				this.fetch().then(({ css, files }) => {
-					addFile(cssFile, new RawSource(css.join("\n")))
+					addFile(cssFile, new RawSource(css))
 					for(const fileName in files) {
 						addFile(fileName, files[fileName])
 					}
