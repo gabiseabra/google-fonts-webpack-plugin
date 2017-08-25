@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [v0.4.2] - 2017-08-25
+
+### Fixed
+ Fixed peerDependencies webpack version [issue [\#12](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/12)]
+
 ## [v0.4.1] - 2017-07-3
 
 ### Fixed
