@@ -13,7 +13,7 @@ function getVariantName(variant) {
 	return weight.toString()
 }
 
-module.exports = function cssUrl(fonts, apiUrl = API_URL) {
+module.exports = function googleFontsUrl(fonts, apiUrl = API_URL) {
 	const fontQueries = []
 	fonts.forEach(({ family, subsets, variants }) => {
 		let query = family.replace(" ", "+")
@@ -21,7 +21,7 @@ module.exports = function cssUrl(fonts, apiUrl = API_URL) {
 			query += ":" + variants.map(name => getVariantName(name)).join(",")
 		}
 		if(subsets) {
-			query += "&subsets=" + subsets.join(",")
+			query += "&subset=" + subsets.join(",")
 		}
 		fontQueries.push(query)
 	})
