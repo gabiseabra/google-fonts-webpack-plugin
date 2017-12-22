@@ -2,10 +2,21 @@
 
 ## [Unreleased]
 
+## [v0.4.4] - 2017-12-22
+
+### Fixed
+* Fixed local public path [PR [\#16](https://github.com/gabiseabra/google-fonts-webpack-plugin/pull/16)] [issue [\#15](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/15)]
+
+## [v0.4.3] - 2017-09-20
+
+### Fixed
+* Fixed googleapis url generator [issue [\#13](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/13)]
+* Fixed README [PR [\#8](https://github.com/gabiseabra/google-fonts-webpack-plugin/pull/8)]
+
 ## [v0.4.2] - 2017-08-25
 
 ### Fixed
- Fixed peerDependencies webpack version [issue [\#12](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/12)]
+* Fixed peerDependencies webpack version [issue [\#12](https://github.com/gabiseabra/google-fonts-webpack-plugin/issues/12)]
 
 ## [v0.4.1] - 2017-07-3
 
