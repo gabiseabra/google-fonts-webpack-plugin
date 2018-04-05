@@ -105,7 +105,7 @@ class GoogleWebfontsPlugin {
 			} else {
 				cb()
 			}
-			compilation.plugin("html-webpack-plugin-before-html-generation", (data) => {
+			compilation.plugin("html-webpack-plugin-before-html-generation", (data, cb) => {
 				if (local && (data.assets.publicPath.indexOf("://") !== -1 || data.assets.publicPath.indexOf(":") !== -1)) {
           data.assets.css.push(data.assets.publicPath + cssFile);
         } else if (local) {
@@ -113,6 +113,9 @@ class GoogleWebfontsPlugin {
         } else {
           data.assets.css.push(cssUrl(fonts));
         }
+        if (typeof cd === 'function') {
+          cb(null, data)
+  	}
 			})
 			compilation.plugin("additional-assets", cb => {
 				compilation.chunks.push(this.chunk)
