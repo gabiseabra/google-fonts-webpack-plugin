@@ -113,7 +113,7 @@ class GoogleWebfontsPlugin {
         } else {
           data.assets.css.push(cssUrl(fonts));
         }
-        if (typeof cd === 'function') {
+        if (typeof cb === 'function') {
           cb(null, data)
   	}
 			})
