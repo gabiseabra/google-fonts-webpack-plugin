@@ -107,13 +107,15 @@ class GoogleWebfontsPlugin {
 			}
 			compilation.plugin("html-webpack-plugin-before-html-generation", (data, cb) => {
 				if (local && (data.assets.publicPath.indexOf("://") !== -1 || data.assets.publicPath.indexOf(":") !== -1)) {
-                    data.assets.css.push(data.assets.publicPath + cssFile);
-                } else if (local) {
-                    data.assets.css.push(path.posix.join(data.assets.publicPath, cssFile));
-                } else {
-                    data.assets.css.push(cssUrl(fonts));
-                }
-				cb(null, data)
+          data.assets.css.push(data.assets.publicPath + cssFile);
+        } else if (local) {
+          data.assets.css.push(path.posix.join(data.assets.publicPath, cssFile));
+        } else {
+          data.assets.css.push(cssUrl(fonts));
+        }
+        if (typeof cb === 'function') {
+          cb(null, data)
+  	}
 			})
 			compilation.plugin("additional-assets", cb => {
 				compilation.chunks.push(this.chunk)
