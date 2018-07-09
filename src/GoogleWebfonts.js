@@ -1,7 +1,7 @@
 const _ = require("lodash")
 const path = require("path")
 const yauzl = require("yauzl")
-const fetch = require("node-fetch")
+const fetch = require("./fetch")
 const { RawSource } = require("webpack-sources")
 const FontTypes = require("./FontTypes")
 
