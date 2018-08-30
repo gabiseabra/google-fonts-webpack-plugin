@@ -22,18 +22,19 @@
     "watch": "mocha spec --colors --watch"
   },
   "devDependencies": {
+    "eslint": "^5.0.1",
     "memory-fs": "^0.4.1",
-    "mocha": "^3.2.0",
-    "should": "^11.2.1",
-    "webpack": "^2.2.1"
+    "mocha": "^5.2.0",
+    "should": "^13.2.1",
+    "webpack": "^4.14.0"
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "node-fetch": "^1.6.3",
-    "webpack-sources": "^0.2.0",
+    "node-fetch": "^2.1.2",
+    "webpack-sources": "^1.1.0",
     "yauzl": "^2.8.0"
   },
   "peerDependencies": {
-    "webpack": ">=2.2.0"
+    "webpack": ">=4.14.0"
   }
 }
