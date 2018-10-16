@@ -13,7 +13,7 @@ const defaults = {
     apiUrl: undefined,
     formats: undefined,
     filename: "fonts.css",
-    path: "font/",
+    path: "font",
     local: true
 }
 
@@ -64,13 +64,10 @@ class GoogleWebfontsPlugin {
                         }
                     ));
                 });
-            const cssRelativePath = path.posix.relative(
-                path.dirname(cssFile),
-                fontsPath
-            );
+
             promises.push(
                 query.then(selection => {
-                    return selection.css(cssRelativePath).then((css) => {
+                    return selection.css(fontsPath).then((css) => {
                         fontsCss.push({
                             css,
                             id: selection.font.id
@@ -83,7 +80,9 @@ class GoogleWebfontsPlugin {
                     query.then(q => q.assets())
                     .then(assets => {
                         for (const fileName in assets) {
-                            files[fontsPath + fileName] = assets[fileName]
+                            const fontPath = path.dirname(cssFile)
+                            const realFileName = path.join(fontPath, fontsPath, fileName)
+                            files[realFileName] = assets[fileName]
                         }
                     })
                 );
@@ -108,11 +107,12 @@ class GoogleWebfontsPlugin {
         } = this.options
 
 		const htmlWebpackPluginBeforeHtmlGeneration = (data, cb) => {
-            if (local && (data.assets.publicPath.indexOf("://") !== -1 || data.assets.publicPath.indexOf(":") !== -1)) {
-                data.assets.css.push(data.assets.publicPath + cssFile);
+            const publicPath = data.assets.publicPath
+            if (local && (publicPath.indexOf("://") !== -1 || publicPath.indexOf(":") !== -1)) {
+                data.assets.css.push(publicPath + cssFile);
             }
             else if (local) {
-                data.assets.css.push(path.posix.join(data.assets.publicPath, cssFile));
+                data.assets.css.push(path.posix.join(publicPath, cssFile));
             }
             else {
                 data.assets.css.push(cssUrl(fonts));
