@@ -9,14 +9,14 @@ Download Google fonts to webpack build folder using [google-webfonts-helper](htt
 ## Install
 
 ```bash
-npm install google-fonts-webpack-plugin
+npm install @beyonk/google-fonts-webpack-plugin
 ```
 
 ## Usage
 
 `/webpack.config.js`
 ```js
-const GoogleFontsPlugin = require("google-fonts-webpack-plugin")
+const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin")
 
 module.exports = {
 	"entry": "index.js",
