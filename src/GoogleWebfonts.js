@@ -14,6 +14,7 @@ const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, src, fallback }) => `
 	font-family: ${fontFamily};
 	font-style: ${fontStyle};
 	font-weight: ${fontWeight};
+	font-display: swap;
 	${fallback ? `src: ${fallback};` : ""}
 	${src.length ? `src: ${src.join(",\n\t\t")};` : ""}
 }
