@@ -21,7 +21,7 @@ const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, src, fallback }) => `
 `
 
 function getVariantCss({ variant, info, font, formats, fontsPath }) {
-	const src = info.local.map(fileName => `local("${fileName}")`)
+	const src = info.hasOwnProperty('local') ? info.local.map(fileName => `local("${fileName}")`) : ["local("+info.fontFamily+")"]
 	let fallback
 	formats.forEach(ext => {
 		if(ext in info) {
