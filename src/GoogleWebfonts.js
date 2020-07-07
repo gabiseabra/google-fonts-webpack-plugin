@@ -2,6 +2,9 @@ const _ = require("lodash")
 const path = require("path")
 const yauzl = require("yauzl")
 const fetch = require("node-fetch")
+const os = require("os")
+const md5 = require("md5")
+const fs = require("fs")
 const { RawSource } = require("webpack-sources")
 const FontTypes = require("./FontTypes")
 
@@ -19,6 +22,10 @@ const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, src, fallback }) => `
 	${src.length ? `src: ${src.join(",\n\t\t")};` : ""}
 }
 `
+
+function tmpFile(filename) {
+	return path.join(os.tmpdir(), filename);
+}
 
 function getVariantCss({ variant, info, font, formats, fontsPath }) {
 	const src = Object.prototype.hasOwnProperty.call(info, 'local') ? info.local.map(fileName => `local("${fileName}")`) : ["local("+info.fontFamily+")"]
@@ -93,14 +100,22 @@ class Selection {
 		if(formats) {
 			url += "&formats=" + formats.join(",")
 		}
-		return fetch(url)
-			.then(response => {
-				if(response.status !== 200) {
-					throw new Error(response.statusText)
-				}
-				this._response = response
-				return response
-			})
+		const cacheFilePath = tmpFile('google-fonts-webpack-' + md5(url))
+		if (fs.existsSync(cacheFilePath)) {
+			return fs.readFileSync(cacheFilePath)
+		} else {
+			return fetch(url)
+				.then(response => {
+					if(response.status !== 200) {
+						throw new Error(response.statusText)
+					}
+					this._response = response.buffer().then(buffer => {
+						fs.writeFileSync(cacheFilePath, buffer)
+						return buffer
+					})
+					return this._response
+				})
+		}
 	}
 
 	files() {
@@ -108,7 +123,6 @@ class Selection {
 			return Promise.resolve(this._files)
 		}
 		return this.download()
-			.then(response => response.buffer())
 			.then(buffer => new Promise((resolve, reject) => {
 				this._files = {}
 				yauzl.fromBuffer(buffer, { lazyEntries: true }, (err, zipFile) => {

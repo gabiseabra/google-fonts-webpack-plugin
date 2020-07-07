@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
+    "md5": "^2.2.1",
     "node-fetch": "^2.1.2",
     "webpack-sources": "^1.1.0",
     "yauzl": "^2.8.0"
