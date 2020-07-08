@@ -1,5 +1,9 @@
 const should = require("should")
 const GoogleWebfonts = require("../src/GoogleWebfonts")
+const fs = require('fs')
+const path = require('path')
+const os = require('os')
+const md5 = require("md5")
 
 describe("GoogleWebfonts", () => {
 	let api
@@ -94,6 +98,7 @@ describe("GoogleWebfonts", () => {
 			it("fetches font files", () => (
 				promise.then(query => query.download())
 					.then(res => {
+						console.log(res)
 						res.status.should.equal(200)
 					})
 			))
