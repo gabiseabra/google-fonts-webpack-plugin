@@ -102,7 +102,9 @@ class Selection {
 		}
 		const cacheFilePath = tmpFile('google-fonts-webpack-' + md5(url))
 		if (fs.existsSync(cacheFilePath)) {
-			return fs.readFileSync(cacheFilePath)
+			return new Promise((resolve, reject) => {
+				resolve(fs.readFileSync(cacheFilePath))
+			})
 		} else {
 			return fetch(url)
 				.then(response => {
