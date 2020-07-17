@@ -88,10 +88,7 @@ class Selection {
 			})
 	}
 
-	download() {
-		if(this._response) {
-			return Promise.resolve(this._response)
-		}
+	getZipURL() {
 		const { font } = this
 		const { subsets, variants, formats } = this.query
 		let url = `${font.url}?download=zip`
@@ -100,23 +97,40 @@ class Selection {
 		if(formats) {
 			url += "&formats=" + formats.join(",")
 		}
-		const cacheFilePath = tmpFile('google-fonts-webpack-' + md5(url))
-		if (fs.existsSync(cacheFilePath)) {
-			return new Promise((resolve, reject) => {
-				resolve(fs.readFileSync(cacheFilePath))
+		return url
+	}
+
+	download() {
+		if(this._response) {
+			return Promise.resolve(this._response)
+		}
+		return fetch(this.getZipURL())
+			.then(response => {
+				if(response.status !== 200) {
+					throw new Error(response.statusText)
+				}
+				this._response = response
+				return response
 			})
+	}
+
+	// Download zip, but return cached if there is one
+	downloadWithCache() {
+		const url = this.getZipURL()
+		const cacheFilePath = tmpFile("google-fonts-webpack-" + md5(url) + ".zip")
+		if (fs.existsSync(cacheFilePath)) {
+			return Promise.resolve(fs.readFileSync(cacheFilePath))
 		} else {
-			return fetch(url)
-				.then(response => {
-					if(response.status !== 200) {
-						throw new Error(response.statusText)
-					}
-					this._response = response.buffer().then(buffer => {
-						fs.writeFileSync(cacheFilePath, buffer)
-						return buffer
+			return new Promise((resolve, reject) => {
+				this.download()
+					.then(response => response.buffer())
+					.then(buffer => {
+						fs.writeFile(cacheFilePath, buffer, (err) => {
+							if (err) console.log("Couldn't cache file")
+						})
+						resolve(buffer)
 					})
-					return this._response
-				})
+			})
 		}
 	}
 
@@ -124,7 +138,7 @@ class Selection {
 		if(this._files) {
 			return Promise.resolve(this._files)
 		}
-		return this.download()
+		return this.downloadWithCache()
 			.then(buffer => new Promise((resolve, reject) => {
 				this._files = {}
 				yauzl.fromBuffer(buffer, { lazyEntries: true }, (err, zipFile) => {

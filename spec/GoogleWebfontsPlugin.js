@@ -1,6 +1,8 @@
 const should = require("should");
 const webpack = require("webpack");
 const MemoryFs = require("memory-fs");
+const nodeFS = require("fs");
+const os = require("os");
 const GoogleWebfontPlugin = require("../src");
 
 const webpackConfig = {
@@ -64,4 +66,10 @@ describe("GoogleWebfontPlugin", () => {
 		fs.existsSync("/styles/fonts.css").should.be.ok();
 		fs.readFileSync("/styles/fonts.css", "utf8").should.containEql("./font/Roboto-Regular.woff")
 	});
+
+	it("downloaded files are cached", () => {
+		nodeFS.readdirSync(os.tmpdir()).filter(fn => {
+			return fn.endsWith(".zip") && fn.startsWith("google-fonts-webpack")
+		}).should.not.be.exactly(0)
+	})
 });

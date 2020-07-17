@@ -18,8 +18,8 @@
     "plugin"
   ],
   "scripts": {
-    "test": "mocha spec --colors",
-    "watch": "mocha spec --colors --watch"
+    "test": "mocha --timeout 5000 spec --colors",
+    "watch": "mocha --timeout 5000 spec --colors --watch"
   },
   "devDependencies": {
     "eslint": "^5.0.1",
