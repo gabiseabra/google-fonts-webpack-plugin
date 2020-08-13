@@ -81,7 +81,8 @@ describe("GoogleWebfonts", () => {
 			promise = api.getFontById("open-sans")
 				.then(font => font.select({
 					variants: [ "400", "700italic" ],
-					formats: [ "woff", "woff2" ]
+					formats: [ "woff", "woff2" ],
+					display: "block"
 				}))
 		})
 
@@ -92,6 +93,11 @@ describe("GoogleWebfonts", () => {
 						css.should.containEql("@font-face")
 					})
 			))
+
+			it("returns font-display block css", async () => {
+				const css = await promise.then(query => query.css())
+				css.should.containEql("font-display: block")
+			})
 		})
 
 		describe("#download", () => {

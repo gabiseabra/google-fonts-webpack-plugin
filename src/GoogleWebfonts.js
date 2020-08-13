@@ -12,12 +12,12 @@ const API_URL = "https://google-webfonts-helper.herokuapp.com/api/fonts"
 
 const FONT_SRC = (font, format) => `url("${font}")${format ? ` format("${format}")` : ""}`
 
-const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, src, fallback }) => `
+const FONT_FACE = ({ fontFamily, fontStyle, fontWeight, display, src, fallback }) => `
 @font-face {
 	font-family: ${fontFamily};
 	font-style: ${fontStyle};
 	font-weight: ${fontWeight};
-	font-display: swap;
+	font-display: ${display};
 	${fallback ? `src: ${fallback};` : ""}
 	${src.length ? `src: ${src.join(",\n\t\t")};` : ""}
 }
@@ -27,7 +27,7 @@ function tmpFile(filename) {
 	return path.join(os.tmpdir(), filename);
 }
 
-function getVariantCss({ variant, info, font, formats, fontsPath }) {
+function getVariantCss({ variant, info, font, formats, display, fontsPath }) {
 	const src = Object.prototype.hasOwnProperty.call(info, 'local') ? info.local.map(fileName => `local("${fileName}")`) : ["local("+info.fontFamily+")"]
 	let fallback
 	formats.forEach(ext => {
@@ -46,7 +46,7 @@ function getVariantCss({ variant, info, font, formats, fontsPath }) {
 	})
 	return (
 		`/* === ${font.family} - ${variant} */` +
-		FONT_FACE(_.assign({ src, fallback }, info))
+		FONT_FACE(_.assign({ src, fallback, display }, info))
 	)
 }
 
@@ -56,7 +56,8 @@ class Selection {
 		this.query = {
 			subsets: query.subsets || font.defaults.subsets,
 			variants: query.variants || font.defaults.variants,
-			formats: query.formats || _.keys(FontTypes)
+			formats: query.formats || _.keys(FontTypes),
+			display: query.display || "swap"
 		}
 		this.query.variants = this.query.variants.map(value => {
 			switch(value) {
@@ -68,7 +69,7 @@ class Selection {
 	}
 
 	css(fontsPath) {
-		const { font, query: { subsets, variants, formats } } = this
+		const { font, query: { subsets, variants, formats, display } } = this
 		return font.info(subsets)
 			.then(info => {
 				const css = []
@@ -80,6 +81,7 @@ class Selection {
 							formats,
 							variant,
 							font,
+							display,
 							fontsPath
 						}))
 					}
@@ -182,12 +184,13 @@ class Selection {
 }
 
 class Font {
-	constructor(url, { id, family, variants, formats, defSubset, defVariant }) {
+	constructor(url, { id, family, variants, formats, display, defSubset, defVariant }) {
 		this.apiUrl = url
 		this.id = id
 		this.family = family
 		this.variants = variants
 		this.formats = formats
+		this.display = display
 		this.defaults = {
 			subsets: [ defSubset ],
 			variants: [ defVariant ]
