@@ -27,7 +27,7 @@ module.exports = {
 		new GoogleFontsPlugin({
 			fonts: [
 				{ family: "Source Sans Pro" },
-				{ family: "Roboto", variants: [ "400", "700italic" ] }
+				{ family: "Roboto", variants: [ "400", "700italic" ], display: "block" }
 			]
 			/* ...options */
 		})
@@ -60,3 +60,4 @@ new GoogleFontsPlugin(options: Object)
 |variants|`Array`|-|Font variants according	to google-webfonts-helper (e.g.: `[ "italic", "500", "700italic" ]`).
 |subsets|`Array`|-|Font subsets according	to google-webfonts-helper (e.g.: `[ "latin", "greek" ]`).
 |formats|`Array`|-|Font formats to download. Defaults to `options.formats`.
+|display|`String`|"swap"|Font Display|
