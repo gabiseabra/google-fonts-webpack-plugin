@@ -125,14 +125,14 @@ class GoogleWebfontsPlugin {
         const make = (compilation, cb) => {
 
 			const additionalAssets = (cb) => {
-	            compilation.chunks.push(this.chunk);
+	            compilation.chunks.add(this.chunk);
 	            compilation.namedChunks.set(this.options.name, this.chunk);
 	            cb();
 	        };
 
             if (local) {
                 const addFile = (fileName, source) => {
-                    this.chunk.files.push(fileName)
+                    this.chunk.files.add(fileName)
                     compilation.assets[fileName] = source
                 }
                 this.fetch().then(({
