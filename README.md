@@ -1,6 +1,6 @@
 # Google Fonts Webpack Plugin
 
-*Compatible with Webpack 4.0*
+*Compatible with Webpack 5.0*
 
 Download Google fonts to webpack build folder using [google-webfonts-helper](https://github.com/majodev/google-webfonts-helper) or use CDN to integrate with [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin).
 
