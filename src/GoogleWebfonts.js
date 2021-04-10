@@ -27,8 +27,12 @@ function tmpFile(filename) {
 	return path.join(os.tmpdir(), filename);
 }
 
-function getVariantCss({ variant, info, font, formats, display, fontsPath }) {
-	const src = Object.prototype.hasOwnProperty.call(info, 'local') ? info.local.map(fileName => `local("${fileName}")`) : ["local("+info.fontFamily+")"]
+function getVariantCss({ variant, info, font, formats, display, fontsPath, noLocalInCss }) {
+	const src = !!noLocalInCss
+		? []
+		: Object.prototype.hasOwnProperty.call(info, 'local')
+			? info.local.map(fileName => `local("${fileName}")`)
+			: ["local("+info.fontFamily+")"]
 	let fallback
 	formats.forEach(ext => {
 		if(ext in info) {
@@ -66,10 +70,11 @@ class Selection {
 				default: return value
 			}
 		})
+		this.noLocalInCss = query.noLocalInCss
 	}
 
 	css(fontsPath) {
-		const { font, query: { subsets, variants, formats, display } } = this
+		const { font, query: { subsets, variants, formats, display }, noLocalInCss } = this
 		return font.info(subsets)
 			.then(info => {
 				const css = []
@@ -82,7 +87,8 @@ class Selection {
 							variant,
 							font,
 							display,
-							fontsPath
+							fontsPath,
+							noLocalInCss
 						}))
 					}
 				})

@@ -14,7 +14,8 @@ const defaults = {
     formats: undefined,
     filename: "fonts.css",
     path: "font",
-    local: true
+    local: true,
+    noLocalInCss: false
 }
 
 const pluginSignature = {
@@ -42,7 +43,8 @@ class GoogleWebfontsPlugin {
             apiUrl,
             path: fontsPath,
             filename: cssFile,
-            formats: defaultFormats
+            formats: defaultFormats,
+            noLocalInCss: noLocalInCss
         } = this.options;
         const compareCss = (a, b) => (a.id.localeCompare(b.id));
         const fontsCss = [];
@@ -60,7 +62,8 @@ class GoogleWebfontsPlugin {
                     }
                     return font.select(_.assign(
                         fontOptions, {
-                            formats: defaultFormats
+                            formats: defaultFormats,
+                            noLocalInCss
                         }
                     ));
                 });

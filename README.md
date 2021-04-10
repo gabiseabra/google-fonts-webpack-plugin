@@ -47,7 +47,8 @@ new GoogleFontsPlugin(options: Object)
 |name|`String`|`"fonts"`|Module name.
 |filename|`String`|`"fonts.css"`|Css file name.
 |path|`String`|`"font/"`|Relative path to fonts directory. If path is `undefined` fonts are not downloaded, the css file is generated with Google hosted font files.
-|local|`Boolean`|`true`|Wether to use google-webfonts-helper API or just link to Google Fonts hosted css. If this option is set to false this plugin just adds the css url to html-webpack-plugin (if present).
+|local|`Boolean`|`true`|Whether to use google-webfonts-helper API or just link to Google Fonts hosted css. If this option is set to false this plugin just adds the css url to html-webpack-plugin (if present).
+|noLocalInCss|`Boolean`|`false`|Whether to prepend `local(FontName)` expression before font files in CSS file ([see MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/src)).
 |formats|`Array`|`[ "eot", "woff", "woff2", "ttf", "svg" ]`|Font formats to download.
 |apiUrl|`String`|`"https://google-webfonts-helper.herokuapp.com/api/fonts"`|google-webfonts-helper API url.
 
