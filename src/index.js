@@ -26,7 +26,8 @@ class GoogleWebfontsPlugin {
     constructor (options) {
         this.options = Object.assign({}, defaults, options)
         this.chunk = new Chunk(this.options.name)
-        this.chunk.ids = []
+        this.chunk.id = "this.options.name"
+        this.chunk.ids = [ this.options.name ]
         this.chunk.name = this.options.name
     }
 
